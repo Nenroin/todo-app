@@ -3,7 +3,7 @@ const Model = require('../models/todo');
 
 const router = express.Router();
 
-router.post('/createTodo', async (req, res) => {
+router.post('/todo', async (req, res) => {
     const data = new Model({
         isChecked: req.body.isChecked,
         name: req.body.name,
@@ -23,7 +23,7 @@ router.post('/createTodo', async (req, res) => {
     }
 });
 
-router.get('/getAllTodos', async (req, res) => {
+router.get('/todos', async (req, res) => {
     try {
         const data = await Model.find();
         res.json(data.map(i => ({id: i.id, isChecked: i.isChecked, name: i.name})));
@@ -33,7 +33,7 @@ router.get('/getAllTodos', async (req, res) => {
     }
 });
 
-router.patch('/updateTodo/:id', async (req, res) => {
+router.patch('/todo/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -56,7 +56,7 @@ router.patch('/updateTodo/:id', async (req, res) => {
     }
 });
 
-router.delete('/deleteTodo/:id', async (req, res) => {
+router.delete('/todo/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const data = await Model.findByIdAndDelete(id);

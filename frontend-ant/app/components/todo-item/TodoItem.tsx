@@ -2,7 +2,7 @@
 
 import { Card, Flex, Button, Typography, Checkbox } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { handleCancel, handleDelete, handleOk, handleOnCheckboxClick } from './utils';
+import { handleCancel, handleDelete, handleOk, handleOnCheckboxClick } from './functions';
 import { useState } from 'react';
 import TodoEditModal from '../TodoEditModal';
 

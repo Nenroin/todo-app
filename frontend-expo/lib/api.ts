@@ -1,6 +1,6 @@
-import { Todo } from "../types";
+import { Todo } from "@/types";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export async function getAllTodos(): Promise<Todo[]> {
   const response = await fetch(`${baseUrl}/todos`);
