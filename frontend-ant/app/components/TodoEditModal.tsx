@@ -16,6 +16,10 @@ export default function TodoEdit({
     onCancel?: () => void,
 }) {
     const handleOk = () => {
+        if (!inputValue.trim()) {
+            return;
+        }
+        
         setOpen(false);
         onOk();
     };

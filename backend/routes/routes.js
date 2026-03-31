@@ -26,7 +26,7 @@ router.post('/todo', async (req, res) => {
 router.get('/todos', async (req, res) => {
     try {
         const data = await Model.find();
-        res.json(data.map(i => ({id: i.id, isChecked: i.isChecked, name: i.name})));
+        res.json(data.map(i => ({ id: i.id, isChecked: i.isChecked, name: i.name })));
     }
     catch (error) {
         res.status(500).json({ message: error.message });

@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Checkbox } from 'react-native-paper';
-import TodoEditModal from '../TodoEditModal';
-import { handleCancel, handleDelete, handleOk, handleOnCheckboxClick } from './functions';
+import TodoEditModal from './TodoEditModal';
 
 export default function TodoItem({
     id,
     isChecked,
     name,
-    onChange = () => { },
-    onDelete = () => { },
+    onUpdate,
+    onDelete,
 }: {
     id: string,
     isChecked: boolean,
     name: string,
-    onChange?: () => void,
-    onDelete?: () => void,
+    onUpdate: (
+        id: string,
+        isChecked: boolean,
+        name: string
+    ) => void,
+    onDelete: (id: string) => void,
 }) {
-    const [open, setOpen] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
     const [isCheckedValue, setIsCheckedValue] = useState(isChecked);
     const [inputValue, setInputValue] = useState(name);
 
@@ -27,14 +30,11 @@ export default function TodoItem({
                 <View style={styles.leftSection}>
                     <Checkbox
                         status={isCheckedValue ? 'checked' : 'unchecked'}
-                        onPress={() => handleOnCheckboxClick(
-                            id,
-                            !isCheckedValue,
-                            inputValue,
-                            setIsCheckedValue,
-                            setOpen,
-                            onChange
-                        )}
+                        onPress={() => {
+                            const newIsCheckedValue = !isCheckedValue;
+                            onUpdate(id, newIsCheckedValue, inputValue);
+                            setIsCheckedValue(newIsCheckedValue);
+                        }}
                     />
                     <Text style={[
                         styles.todoText,
@@ -47,7 +47,7 @@ export default function TodoItem({
                 <View style={styles.rightSection}>
                     <TouchableOpacity
                         style={styles.editButton}
-                        onPress={() => setOpen(true)}
+                        onPress={() => setModalOpen(true)}
                         activeOpacity={0.7}
                     >
                         <Text style={styles.editButtonText}>✎</Text>
@@ -55,7 +55,7 @@ export default function TodoItem({
 
                     <TouchableOpacity
                         style={styles.deleteButton}
-                        onPress={() => handleDelete(id, onDelete)}
+                        onPress={() => onDelete(id)}
                         activeOpacity={0.7}
                     >
                         <Text style={styles.deleteButtonText}>🗑</Text>
@@ -64,12 +64,15 @@ export default function TodoItem({
             </View>
 
             <TodoEditModal
-                isOpen={open}
-                setOpen={setOpen}
+                isOpen={isModalOpen}
+                setOpen={setModalOpen}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
-                onOk={() => handleOk(id, isCheckedValue, inputValue, setOpen, onChange)}
-                onCancel={() => handleCancel(setOpen)}
+                onOk={() => {
+                    onUpdate(id, isCheckedValue, inputValue);
+                    setModalOpen(false);
+                }}
+                onCancel={() => setModalOpen(false)}
             />
         </>
     );

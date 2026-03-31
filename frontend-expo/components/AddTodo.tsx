@@ -1,27 +1,20 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { createTodo } from '../lib/api';
 import TodoEditModal from './TodoEditModal';
 
-export default function AddTodo({ onAdd }: { onAdd: () => void }) {
+export default function AddTodo({ onAdd }: { onAdd: (name: string) => void }) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
-    const handleOk = async () => {
+    const handleOk = () => {
         if (!inputValue.trim()) {
             return;
         }
+        
+        onAdd(inputValue);
 
-        try {
-            await createTodo(inputValue);
-
-            setInputValue("");
-            setOpen(false);
-
-            onAdd();
-        } catch (error) {
-            console.error("Failed to create todo:", error);
-        }
+        setInputValue("");
+        setOpen(false);
     };
 
     const handleCancel = () => {

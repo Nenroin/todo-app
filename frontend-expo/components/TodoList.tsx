@@ -1,18 +1,24 @@
 import { ScrollView } from 'react-native';
 import { Todo } from "../types";
-import TodoItem from "./todo-item/TodoItem";
+import TodoItem from './TodoItem';
 
 export default function TodoList({
     todos,
-    onChange = () => { },
+    onUpdate,
+    onDelete,
 }: {
     todos: Todo[],
-    onChange?: () => void,
+    onUpdate: (
+        id: string,
+        isChecked: boolean,
+        name: string
+    ) => void,
+    onDelete: (id: string) => void,
 }) {
     return (
-        <ScrollView 
-            contentContainerStyle={{ 
-                gap: 8 
+        <ScrollView
+            contentContainerStyle={{
+                gap: 8
             }}
         >
             {
@@ -21,8 +27,8 @@ export default function TodoList({
                     id={i.id}
                     isChecked={i.isChecked}
                     name={i.name}
-                    onChange={onChange}
-                    onDelete={onChange}
+                    onUpdate={onUpdate}
+                    onDelete={onDelete}
                 />)
             }
         </ScrollView>
