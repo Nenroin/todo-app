@@ -11,7 +11,12 @@ router.post('/createTodo', async (req, res) => {
 
     try {
         const dataToSave = await data.save();
-        res.status(200).json(dataToSave);
+
+        res.status(200).json({
+            id: dataToSave.id,
+            isChecked: dataToSave.isChecked,
+            name: dataToSave.name,
+        });
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -21,7 +26,7 @@ router.post('/createTodo', async (req, res) => {
 router.get('/getAllTodos', async (req, res) => {
     try {
         const data = await Model.find();
-        res.json(data);
+        res.json(data.map(i => ({id: i.id, isChecked: i.isChecked, name: i.name})));
     }
     catch (error) {
         res.status(500).json({ message: error.message });
@@ -40,7 +45,11 @@ router.patch('/updateTodo/:id', async (req, res) => {
             options,
         );
 
-        res.send(result);
+        res.send({
+            id: result.id,
+            isChecked: result.isChecked,
+            name: result.name,
+        });
     }
     catch (error) {
         res.status(400).json({ message: error.message });
@@ -53,7 +62,7 @@ router.delete('/deleteTodo/:id', async (req, res) => {
         const data = await Model.findByIdAndDelete(id);
         res.status(200).json({
             message: "Todo deleted successfully",
-            deletedItemId: data.id,
+            id: data.id,
         });
     }
     catch (error) {
